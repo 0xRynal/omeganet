@@ -1,0 +1,22 @@
+{
+	"$schema": "https://unpkg.com/knip@5/schema.json",
+	"ignoreBinaries": ["rojo"],
+	"entry": ["src/index.ts", "src/types/public.ts", "cli/bin.ts"],
+	"project": ["src/**/*.ts", "cli/**/*.ts"],
+	"ignore": [
+		"out/**",
+		"cli/dist/**",
+		"tests/**",
+		"examples/**",
+		"src/**/index.ts",
+		"src/devtools/studioPlugin.ts"
+	],
+	"ignoreDependencies": [
+		"@flamework/core",
+		"@rbxts/fusion",
+		"@rbxts/react",
+		"@rbxts/compiler-types",
+		"@rbxts/types"
+	],
+	"ignoreExportsUsedInFile": true
+}

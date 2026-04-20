@@ -1,0 +1,25 @@
+{
+	"name": "omeganet",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"rbxts_include": {
+				"$path": "include",
+				"node_modules": {
+					"$className": "Folder",
+					"@rbxts": {
+						"$path": "node_modules/@rbxts"
+					}
+				}
+			},
+			"SignalXOmega": {
+				"$path": "out"
+			}
+		},
+		"ServerScriptService": {
+			"SignalXTests": {
+				"$path": "test-out"
+			}
+		}
+	}
+}

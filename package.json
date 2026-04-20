@@ -1,0 +1,95 @@
+{
+  "name": "@rbxts/omeganet",
+  "version": "1.0.0",
+  "description": "Reactive signals and networking for Roblox-TS (middleware, remotes, observables)",
+  "main": "out/init.luau",
+  "typings": "out/index.d.ts",
+  "bin": {
+    "omeganet": "cli/dist/bin.js"
+  },
+  "files": [
+    "out",
+    "cli/dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prebuild": "node scripts/clean-stale-out.cjs",
+    "build": "rbxtsc",
+    "prewatch": "node scripts/clean-stale-out.cjs",
+    "watch": "rbxtsc -w",
+    "build:cli": "tsc -p cli/tsconfig.json",
+    "build:tests": "node scripts/clean-stale-out.cjs && rbxtsc -p tsconfig.tests.json --type=game",
+    "watch:tests": "node scripts/clean-stale-out.cjs && rbxtsc -p tsconfig.tests.json --type=game -w",
+    "studio": "rojo serve",
+    "studio:build": "rojo build -o SignalXTests.rbxl",
+    "test:studio": "npm run build && npm run build:tests && npm run studio:build",
+    "lint": "eslint \"src/**/*.ts\" \"cli/**/*.ts\"",
+    "lint:fix": "eslint \"src/**/*.ts\" \"cli/**/*.ts\" --fix",
+    "knip": "knip",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p cli/tsconfig.json --noEmit",
+    "check": "npm run typecheck && npm run build && npm run lint && npm run knip",
+    "test": "echo \"Run `npm run test:studio` then open SignalXTests.rbxl in Roblox Studio (or use `npm run studio` with Rojo plugin)\" && exit 0",
+    "prepublishOnly": "npm run build && npm run build:cli"
+  },
+  "keywords": [
+    "roblox",
+    "roblox-ts",
+    "signal",
+    "networking",
+    "remote",
+    "parallel",
+    "actor",
+    "observable",
+    "reactive",
+    "middleware",
+    "type-safe"
+  ],
+  "author": "0xRynal",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0xRynal/omeganet.git"
+  },
+  "homepage": "https://github.com/0xRynal/omeganet#readme",
+  "bugs": {
+    "url": "https://github.com/0xRynal/omeganet/issues"
+  },
+  "overrides": {
+    "@emnapi/core": "1.10.0",
+    "@emnapi/runtime": "1.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.0",
+    "@rbxts/compiler-types": "^3.0.0-types.0",
+    "@rbxts/types": "^1.0.916",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.17.0",
+    "knip": "^6.4.1",
+    "roblox-ts": "^3.0.0",
+    "typescript": "^5.5.3"
+  },
+  "peerDependencies": {
+    "@flamework/core": "*",
+    "@rbxts/fusion": "*",
+    "@rbxts/react": "*"
+  },
+  "peerDependenciesMeta": {
+    "@flamework/core": {
+      "optional": true
+    },
+    "@rbxts/fusion": {
+      "optional": true
+    },
+    "@rbxts/react": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@rbxts/services": "^1.6.0"
+  }
+}

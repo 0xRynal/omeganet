@@ -1,0 +1,15 @@
+node_modules/
+out/
+test-out/*
+!test-out/.gitkeep
+cli/dist/
+*.tsbuildinfo
+*.rbxl
+*.rbxlx
+*.rbxm
+*.rbxmx
+.DS_Store
+*.log
+.vscode/
+.idea/
+*.tgz

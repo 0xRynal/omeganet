@@ -1,0 +1,32 @@
+import type { SignalCallback, SignalConnection } from "../core/types";
+import type { CompressorOption, Reliability } from "../remote/types";
+import type { SchemaLike } from "../middleware/builtins/validate";
+import type { ObservableLike } from "../reactive/types";
+import type { MiddlewareEntry, MiddlewareHandler } from "../middleware/types";
+export type OmegaMode = "auto" | "local" | "remote" | "parallel";
+export type OmegaCreateOptions<T extends SignalCallback> = {
+	readonly name: string;
+	readonly mode?: OmegaMode;
+	readonly reliability?: Reliability;
+	readonly batch?: boolean;
+	readonly batchWindow?: number;
+	readonly batchMaxSize?: number;
+	readonly parallel?: boolean;
+	readonly parallelPoolSize?: number;
+	readonly compression?: CompressorOption;
+	readonly schema?: { readonly [K in keyof Parameters<T>]?: SchemaLike<Parameters<T>[K]> };
+};
+export type OmegaSignal<T extends SignalCallback> = {
+	readonly name: string;
+	readonly mode: OmegaMode;
+	connect(handler: T): SignalConnection;
+	once(handler: T): SignalConnection;
+	fire(...args: Parameters<T>): void;
+	fireClient(player: Player, ...args: Parameters<T>): void;
+	fireAllClients(...args: Parameters<T>): void;
+	fireParallel(...args: Parameters<T>): void;
+	use(mw: MiddlewareEntry | MiddlewareHandler): OmegaSignal<T>;
+	asObservable(): ObservableLike<Parameters<T>>;
+	flush(): void;
+	destroy(): void;
+};
