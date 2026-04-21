@@ -13,7 +13,7 @@ export function log(options: LogOptions = {}): MiddlewareEntry {
 	const sink = options.sink ?? ((message: string) => print(message));
 
 	const handler: MiddlewareHandler = (ctx, proceed) => {
-		const base = `[SignalX/${level}] ${ctx.signalName} <- ${ctx.sender?.Name ?? "server"}`;
+		const base = `[Omeganet/${level}] ${ctx.signalName} <- ${ctx.sender?.Name ?? "server"}`;
 		let message = base;
 		if (includeArgs) {
 			const [ok, encoded] = pcall(() => HttpService.JSONEncode(ctx.getArgs()));

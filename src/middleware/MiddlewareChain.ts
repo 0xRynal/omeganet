@@ -70,7 +70,7 @@ export class MiddlewareChain<TArgs extends ReadonlyArray<unknown> = ReadonlyArra
 		const runNext = async (i: number): Promise<void> => {
 			if (ctx.isAborted()) return;
 			if (i <= index) {
-				throw `[SignalX] proceed() called multiple times in middleware "${entries[i]?.name ?? "?"}"`;
+				throw `[Omeganet] proceed() called multiple times in middleware "${entries[i]?.name ?? "?"}"`;
 			}
 			index = i;
 			const entry = entries[i];
@@ -100,7 +100,7 @@ export class MiddlewareChain<TArgs extends ReadonlyArray<unknown> = ReadonlyArra
 		const runNext = (i: number): void => {
 			if (ctx.isAborted()) return;
 			if (i <= index) {
-				throw `[SignalX] proceed() called multiple times in middleware "${entries[i]?.name ?? "?"}"`;
+				throw `[Omeganet] proceed() called multiple times in middleware "${entries[i]?.name ?? "?"}"`;
 			}
 			index = i;
 			const entry = entries[i];
@@ -114,11 +114,11 @@ export class MiddlewareChain<TArgs extends ReadonlyArray<unknown> = ReadonlyArra
 			const result = entry.handler(ctx, proceed);
 			if (Promise.is(result)) {
 				warn(
-					`[SignalX] Middleware "${entry.name}" returned a Promise in executeSync — use execute() instead`,
+					`[Omeganet] Middleware "${entry.name}" returned a Promise in executeSync — use execute() instead`,
 				);
 			}
 		};
 		runNext(0);
 		return ctx;
 	}
-}
+}

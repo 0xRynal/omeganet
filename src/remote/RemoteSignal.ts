@@ -4,7 +4,7 @@ import { Batcher } from "./Batcher";
 import { noCompressor, rleCompressor } from "./Compressor";
 import type { Compressor, RemoteSignalOptions } from "./types";
 const IS_SERVER = RunService.IsServer();
-const REMOTE_ROOT_NAME = "SignalX_Remotes";
+const REMOTE_ROOT_NAME = "Omeganet_Remotes";
 function getRemoteRoot(): Folder {
 	let folder = ReplicatedStorage.FindFirstChild(REMOTE_ROOT_NAME);
 	if (folder === undefined) {
@@ -16,12 +16,12 @@ function getRemoteRoot(): Folder {
 		} else {
 			folder = ReplicatedStorage.WaitForChild(REMOTE_ROOT_NAME, 10);
 			if (folder === undefined) {
-				throw `[SignalX] remote root "${REMOTE_ROOT_NAME}" missing after 10s`;
+				throw `[Omeganet] remote root "${REMOTE_ROOT_NAME}" missing after 10s`;
 			}
 		}
 	}
 	if (!folder.IsA("Folder")) {
-		throw `[SignalX] remote root exists but is not a Folder`;
+		throw `[Omeganet] remote root exists but is not a Folder`;
 	}
 	return folder;
 }
@@ -43,9 +43,9 @@ function ensureRemote(
 	}
 	if (!IS_SERVER) {
 		const waited = root.WaitForChild(name, 10);
-		if (waited === undefined) throw `[SignalX] remote "${name}" not replicated within 10s`;
+		if (waited === undefined) throw `[Omeganet] remote "${name}" not replicated within 10s`;
 		if (waited.IsA("RemoteEvent") || waited.IsA("UnreliableRemoteEvent")) return waited;
-		throw `[SignalX] remote "${name}" is wrong class: ${waited.ClassName}`;
+		throw `[Omeganet] remote "${name}" is wrong class: ${waited.ClassName}`;
 	}
 	const created = new Instance(reliability === "reliable" ? "RemoteEvent" : "UnreliableRemoteEvent");
 	created.Name = name;
@@ -80,7 +80,7 @@ export class RemoteSignal<T extends SignalCallback> {
 	}
 	public fireServer(...args: Parameters<T>): void {
 		if (this.destroyed) return;
-		assert(!IS_SERVER, `[SignalX] fireServer called on server for "${this.name}"`);
+		assert(!IS_SERVER, `[Omeganet] fireServer called on server for "${this.name}"`);
 		if (this.serverBatcher !== undefined) {
 			this.serverBatcher.push(args);
 			return;
@@ -89,7 +89,7 @@ export class RemoteSignal<T extends SignalCallback> {
 	}
 	public fireClient(player: Player, ...args: Parameters<T>): void {
 		if (this.destroyed) return;
-		assert(IS_SERVER, `[SignalX] fireClient called on client for "${this.name}"`);
+		assert(IS_SERVER, `[Omeganet] fireClient called on client for "${this.name}"`);
 		const batchers = this.clientBatcher;
 		if (batchers !== undefined) {
 			let b = batchers.get(player);
@@ -112,7 +112,7 @@ export class RemoteSignal<T extends SignalCallback> {
 	}
 	public fireAllClients(...args: Parameters<T>): void {
 		if (this.destroyed) return;
-		assert(IS_SERVER, `[SignalX] fireAllClients called on client for "${this.name}"`);
+		assert(IS_SERVER, `[Omeganet] fireAllClients called on client for "${this.name}"`);
 		if (this.clientBatcher !== undefined) {
 			for (const player of Players.GetPlayers()) {
 				this.fireClient(player, ...args);
@@ -123,13 +123,13 @@ export class RemoteSignal<T extends SignalCallback> {
 	}
 	public fireFilteredClients(filter: (player: Player) => boolean, ...args: Parameters<T>): void {
 		if (this.destroyed) return;
-		assert(IS_SERVER, `[SignalX] fireFilteredClients called on client`);
+		assert(IS_SERVER, `[Omeganet] fireFilteredClients called on client`);
 		for (const player of Players.GetPlayers()) {
 			if (filter(player)) this.fireClient(player, ...args);
 		}
 	}
 	public onServerEvent(handler: (player: Player, ...args: Parameters<T>) => void): () => void {
-		assert(IS_SERVER, `[SignalX] onServerEvent called on client`);
+		assert(IS_SERVER, `[Omeganet] onServerEvent called on client`);
 		const conn = (this.remote as RemoteEvent).OnServerEvent.Connect(
 			(player: Player, ...raw: Array<unknown>) => {
 				this.dispatchIncoming(raw, (args) => handler(player, ...(args as Parameters<T>)));
@@ -142,7 +142,7 @@ export class RemoteSignal<T extends SignalCallback> {
 		};
 	}
 	public onClientEvent(handler: T): () => void {
-		assert(!IS_SERVER, `[SignalX] onClientEvent called on server`);
+		assert(!IS_SERVER, `[Omeganet] onClientEvent called on server`);
 		const conn = (this.remote as RemoteEvent).OnClientEvent.Connect((...raw: Array<unknown>) => {
 			this.dispatchIncoming(raw, (args) =>
 				(handler as unknown as (...a: Array<unknown>) => void)(...(args as Array<unknown>)),
@@ -187,4 +187,4 @@ export class RemoteSignal<T extends SignalCallback> {
 		}
 		call(raw);
 	}
-}
+}

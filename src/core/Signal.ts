@@ -1,8 +1,8 @@
 import { Connection } from "./Connection";
 import { spawnWithPool } from "./ThreadPool";
 import type { InferArgs, SignalCallback, SignalConnection, SignalOptions } from "./types";
-const DEAD_HANDLER: unknown = setmetatable({}, { __tostring: () => "[signalx:dead]" });
-const DEAD_CONN: unknown = setmetatable({}, { __tostring: () => "[signalx:dead-conn]" });
+const DEAD_HANDLER: unknown = setmetatable({}, { __tostring: () => "[omeganet:dead]" });
+const DEAD_CONN: unknown = setmetatable({}, { __tostring: () => "[omeganet:dead-conn]" });
 export class Signal<T extends SignalCallback> {
 	private count = 0;
 	private destroyed = false;
@@ -23,17 +23,17 @@ export class Signal<T extends SignalCallback> {
 		this.unsafe = options.unsafe ?? false;
 	}
 	public connect(handler: T): SignalConnection {
-		assert(!this.destroyed, `[SignalX] Cannot connect to destroyed signal "${this.name}"`);
+		assert(!this.destroyed, `[Omeganet] Cannot connect to destroyed signal "${this.name}"`);
 		return this.insert(handler, false);
 	}
 	public once(handler: T): SignalConnection {
-		assert(!this.destroyed, `[SignalX] Cannot connect to destroyed signal "${this.name}"`);
+		assert(!this.destroyed, `[Omeganet] Cannot connect to destroyed signal "${this.name}"`);
 		this.onceCount += 1;
 		this.hasOnce = true;
 		return this.insert(handler, true);
 	}
 	public wait(timeout?: number): LuaTuple<InferArgs<T>> {
-		assert(!this.destroyed, `[SignalX] Cannot wait on destroyed signal "${this.name}"`);
+		assert(!this.destroyed, `[Omeganet] Cannot wait on destroyed signal "${this.name}"`);
 		const current = coroutine.running();
 		let resumed = false;
 		let timeoutThread: thread | undefined;
@@ -139,7 +139,7 @@ export class Signal<T extends SignalCallback> {
 			const h = arr[i] as unknown;
 			if (h !== DEAD_HANDLER) {
 				const [ok, err] = pcall(h as (...a: Array<unknown>) => unknown, ...spread);
-				if (!ok) warn(`[SignalX/${name}] handler error: ${err}`);
+				if (!ok) warn(`[Omeganet/${name}] handler error: ${err}`);
 				if (this.hasOnce) {
 					const c = conns[i] as unknown;
 					if (c !== DEAD_CONN && (c as Connection<T>).isOnce) (c as Connection<T>).disconnect();

@@ -9,7 +9,7 @@ export type StudioPanelHandle = {
 };
 
 export function mountStudioPanel(plugin: Plugin): StudioPanelHandle {
-	assert(RunService.IsStudio(), "[SignalX] mountStudioPanel requires Studio");
+	assert(RunService.IsStudio(), "[Omeganet] mountStudioPanel requires Studio");
 
 	const info = new DockWidgetPluginGuiInfo(
 		Enum.InitialDockState.Float,

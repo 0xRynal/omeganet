@@ -12,12 +12,12 @@
 					}
 				}
 			},
-			"SignalXOmega": {
+			"OmeganetOmega": {
 				"$path": "out"
 			}
 		},
 		"ServerScriptService": {
-			"SignalXTests": {
+			"OmeganetTests": {
 				"$path": "test-out"
 			}
 		}

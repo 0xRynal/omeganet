@@ -30,7 +30,7 @@ export function describe(name: string, body: () => void): void {
 	const [ok, err] = pcall(body);
 	currentSuite = previous;
 	if (!ok) {
-		warn(`[SignalX Tests] describe("${name}") threw during setup: ${tostring(err)}`);
+		warn(`[Omeganet Tests] describe("${name}") threw during setup: ${tostring(err)}`);
 	}
 }
 export function it(name: string, fn: TestFn): void {
@@ -177,7 +177,7 @@ function groupBySuite(results: ReadonlyArray<TestResult>): Map<string, Array<Tes
 export function printReport(report: SuiteReport): void {
 	print("");
 	print("=======================================================");
-	print("  SignalX — unit tests");
+	print("  Omeganet — unit tests");
 	print("=======================================================");
 	print("  [OK]/[FAIL] = suite   (passed count / failed count, total ms for suite)");
 	print("  [PASS]/[FAIL] = single test name … duration ms");
@@ -247,4 +247,4 @@ export function printReport(report: SuiteReport): void {
 		print("  [RESULT] All specs passed");
 	}
 	print("=======================================================");
-}
+}

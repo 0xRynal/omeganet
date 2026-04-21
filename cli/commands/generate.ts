@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import * as path from "path";
-const SIGNAL_TEMPLATE = (name: string) => `import { SignalX } from "@rbxts/omeganet";
+const SIGNAL_TEMPLATE = (name: string) => `import { Omeganet } from "@rbxts/omeganet";
 export type ${name}Handler = (player: Player, amount: number) => void;
-export const ${name}Signal = SignalX.Omega.create<${name}Handler>({
+export const ${name}Signal = Omeganet.Omega.create<${name}Handler>({
 	name: "${name}",
 	mode: "auto",
 	reliability: "reliable",
@@ -25,10 +25,10 @@ export function ${name.substring(0, 1).toLowerCase() + name.substring(1)}(option
 }
 `;
 const SERVICE_TEMPLATE = (name: string) => `import { Service, OnStart } from "@flamework/core";
-import { SignalX } from "@rbxts/omeganet";
+import { Omeganet } from "@rbxts/omeganet";
 @Service()
 export class ${name} implements OnStart {
-	private readonly signal = SignalX.Omega.create<(player: Player) => void>({
+	private readonly signal = Omeganet.Omega.create<(player: Player) => void>({
 		name: "${name}_event",
 		mode: "remote",
 	});

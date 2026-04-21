@@ -182,7 +182,7 @@ function measureCase(c: LeakCase): {
 export function runMemoryTests(): MemoryReport {
 	print("");
 	print("=======================================================");
-	print("  SignalX — memory retention (advisory)");
+	print("  Omeganet — memory retention (advisory)");
 	print("=======================================================");
 	print("  delta KB = gcinfo() after − before (Roblox: no full GC)");
 	print("  tol      = max allowed |delta| for PASS");
@@ -241,4 +241,4 @@ export function runMemoryTests(): MemoryReport {
 	}
 	print("=======================================================");
 	return { results, passed, failed, durationMs: totalMs };
-}
+}

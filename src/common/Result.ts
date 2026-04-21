@@ -1,5 +1,5 @@
 
-export type Result<T, E = SignalXError> =
+export type Result<T, E = OmeganetError> =
 	| { readonly ok: true; readonly value: T }
 	| { readonly ok: false; readonly error: E };
 
@@ -22,7 +22,7 @@ export function isErr<T, E>(
 }
 
 export function unwrap<T, E>(result: Result<T, E>): T {
-	assert(result.ok, `[SignalX/Result] unwrap() on error: ${tostring((result as { error: E }).error)}`);
+	assert(result.ok, `[Omeganet/Result] unwrap() on error: ${tostring((result as { error: E }).error)}`);
 	return result.value;
 }
 
@@ -38,7 +38,7 @@ export function mapErr<T, E, F>(result: Result<T, E>, fn: (e: E) => F): Result<T
 	return result.ok ? result : err(fn(result.error));
 }
 
-export class SignalXError {
+export class OmeganetError {
 	public readonly code: string;
 	public readonly message: string;
 	public readonly cause: unknown;
@@ -54,14 +54,14 @@ export class SignalXError {
 	}
 }
 
-export function toError(value: unknown, fallbackCode = "UNKNOWN"): SignalXError {
-	if (value instanceof SignalXError) return value;
-	if (typeIs(value, "string")) return new SignalXError(fallbackCode, value);
+export function toError(value: unknown, fallbackCode = "UNKNOWN"): OmeganetError {
+	if (value instanceof OmeganetError) return value;
+	if (typeIs(value, "string")) return new OmeganetError(fallbackCode, value);
 	if (typeIs(value, "table")) {
 		const t = value as { code?: unknown; message?: unknown };
 		const code = typeIs(t.code, "string") ? t.code : fallbackCode;
 		const message = typeIs(t.message, "string") ? t.message : tostring(value);
-		return new SignalXError(code, message, value);
+		return new OmeganetError(code, message, value);
 	}
-	return new SignalXError(fallbackCode, tostring(value), value);
+	return new OmeganetError(fallbackCode, tostring(value), value);
 }

@@ -1,6 +1,6 @@
 {
   "name": "@rbxts/omeganet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reactive signals and networking for Roblox-TS (middleware, remotes, observables)",
   "main": "out/init.luau",
   "typings": "out/index.d.ts",
@@ -22,14 +22,14 @@
     "build:tests": "node scripts/clean-stale-out.cjs && rbxtsc -p tsconfig.tests.json --type=game",
     "watch:tests": "node scripts/clean-stale-out.cjs && rbxtsc -p tsconfig.tests.json --type=game -w",
     "studio": "rojo serve",
-    "studio:build": "rojo build -o SignalXTests.rbxl",
+    "studio:build": "rojo build -o OmeganetTests.rbxl",
     "test:studio": "npm run build && npm run build:tests && npm run studio:build",
     "lint": "eslint \"src/**/*.ts\" \"cli/**/*.ts\"",
     "lint:fix": "eslint \"src/**/*.ts\" \"cli/**/*.ts\" --fix",
     "knip": "knip",
     "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p cli/tsconfig.json --noEmit",
     "check": "npm run typecheck && npm run build && npm run lint && npm run knip",
-    "test": "echo \"Run `npm run test:studio` then open SignalXTests.rbxl in Roblox Studio (or use `npm run studio` with Rojo plugin)\" && exit 0",
+    "test": "echo \"Run `npm run test:studio` then open OmeganetTests.rbxl in Roblox Studio (or use `npm run studio` with Rojo plugin)\" && exit 0",
     "prepublishOnly": "npm run build && npm run build:cli"
   },
   "keywords": [

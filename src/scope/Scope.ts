@@ -40,7 +40,7 @@ function runOne(d: Disposable): void {
 		else if (isDisposable(d)) d.dispose();
 		else if (isDestroyable(d)) d.destroy();
 	});
-	if (!ok) warn(`[SignalX/Scope] teardown error: ${err}`);
+	if (!ok) warn(`[Omeganet/Scope] teardown error: ${err}`);
 }
 export type Scope = {
 	signal<T extends SignalCallback>(options?: SignalOptions): Signal<T>;
@@ -64,7 +64,7 @@ export function createScope(): Scope {
 	}
 	const scope: Scope = {
 		signal<T extends SignalCallback>(options?: SignalOptions): Signal<T> {
-			assert(!disposed, "[SignalX/Scope] cannot allocate on a disposed scope");
+			assert(!disposed, "[Omeganet/Scope] cannot allocate on a disposed scope");
 			const s = new Signal<T>(options);
 			track(s);
 			return s;

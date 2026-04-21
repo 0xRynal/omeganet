@@ -1,6 +1,6 @@
-import { SignalX } from "@rbxts/omeganet";
+import { Omeganet } from "@rbxts/omeganet";
 
-const onPlayerJoin = SignalX.Omega.create<(player: Player) => void>({
+const onPlayerJoin = Omeganet.Omega.create<(player: Player) => void>({
 	name: "onPlayerJoin",
 	mode: "local",
 });

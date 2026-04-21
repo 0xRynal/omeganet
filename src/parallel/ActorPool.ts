@@ -16,14 +16,14 @@ function hashString(str: string): number {
 }
 function getPoolRoot(): Folder {
 	const parent = IS_SERVER ? ServerScriptService : ReplicatedStorage;
-	let folder = parent.FindFirstChild("SignalX_Actors");
+	let folder = parent.FindFirstChild("Omeganet_Actors");
 	if (folder === undefined) {
 		const created = new Instance("Folder");
-		created.Name = "SignalX_Actors";
+		created.Name = "Omeganet_Actors";
 		created.Parent = parent;
 		folder = created;
 	}
-	if (!folder.IsA("Folder")) throw `[SignalX] Actor root wrong class`;
+	if (!folder.IsA("Folder")) throw `[Omeganet] Actor root wrong class`;
 	return folder;
 }
 export class ActorPool {
@@ -72,4 +72,4 @@ export class ActorPool {
 			this.actors.push(actor);
 		}
 	}
-}
+}

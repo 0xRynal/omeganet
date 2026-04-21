@@ -35,9 +35,9 @@ npm install @rbxts/react             # React hooks
 ## Quick Start
 
 ```typescript
-import { SignalX } from "@rbxts/omeganet";
+import { Omeganet as Facade } from "@rbxts/omeganet";
 
-const onPlayerJoin = SignalX.Omega.create<(player: Player) => void>({
+const onPlayerJoin = Facade.Omega.create<(player: Player) => void>({
   name: "onPlayerJoin",
   mode: "auto",
 });
@@ -55,10 +55,10 @@ For this minimal flow you do not need to wire up a RemoteEvent by hand.
 
 ## Feature Tour
 
-### 1. Unified declaration with `SignalX.Omega.create`
+### 1. Unified declaration with `Facade.Omega.create`
 
 ```typescript
-const damage = SignalX.Omega.create<(targetId: number, amount: number) => void>({
+const damage = Facade.Omega.create<(targetId: number, amount: number) => void>({
   name: "dealDamage",
   mode: "auto",              // local | remote | parallel detected automatically
   reliability: "reliable",   // or "unreliable"
@@ -100,7 +100,7 @@ damage.use({
 ### 3. Remote networking with batching & compression
 
 ```typescript
-const clientEvent = SignalX.Omega.create<(text: string) => void>({
+const clientEvent = Facade.Omega.create<(text: string) => void>({
   name: "chatMessage",
   mode: "remote",
   batch: true,
@@ -122,7 +122,7 @@ clientEvent
 Unreliable variant:
 
 ```typescript
-const position = SignalX.Omega.create<(pos: Vector3) => void>({
+const position = Facade.Omega.create<(pos: Vector3) => void>({
   name: "playerPosition",
   mode: "remote",
   reliability: "unreliable",
@@ -135,7 +135,7 @@ const position = SignalX.Omega.create<(pos: Vector3) => void>({
 ```typescript
 import { SharedState } from "@rbxts/omeganet";
 
-const simulation = SignalX.Omega.create<(id: number, dt: number) => void>({
+const simulation = Facade.Omega.create<(id: number, dt: number) => void>({
   name: "entitySimulation",
   mode: "parallel",
   parallel: true,
@@ -210,14 +210,15 @@ reconciler.reconcile(authoritativeStateFromServer, lastProcessedSeq);
 Deterministic rules over `Collector` stats. Add custom rules and, optionally, a `HintProvider` to format a text report (your own implementation).
 
 ```typescript
-import { SignalX, Collector, DevToolsStream, mountStudioPanel } from "@rbxts/omeganet";
+import { Collector, DevToolsStream, mountStudioPanel } from "@rbxts/omeganet";
+// Reuse `Facade` from previous examples
 
-const suggestions = SignalX.Omega.algo.analyze();
+const suggestions = Facade.Omega.algo.analyze();
 for (const s of suggestions) {
   print(`[${s.severity}] ${s.rule}: ${s.message}`);
 }
 
-SignalX.Omega.algo.addRule((stats) => {
+Facade.Omega.algo.addRule((stats) => {
   if (stats.fires > 10_000) {
     return {
       severity: "warn",
@@ -230,10 +231,10 @@ SignalX.Omega.algo.addRule((stats) => {
   return undefined;
 });
 
-SignalX.Omega.algo.setProvider({
+Facade.Omega.algo.setProvider({
   ask: async (context, stats) => formatReport(context, stats),
 });
-const report = await SignalX.Omega.algo("networking");
+const report = await Facade.Omega.algo("networking");
 
 DevToolsStream.connect((event) => print(event.kind, event.name));
 // mountStudioPanel(plugin);
@@ -266,10 +267,10 @@ const snap = takeSnapshot();
 
 Everything below is exported from `@rbxts/omeganet` (see `src/index.ts`). Types are in `out/*.d.ts` after `npm run build`.
 
-### `SignalX` (facade)
+### Facade (export principal)
 
-- **`SignalX.Omega.create<T>(options)`** — Returns an **`OmegaSignal<T>`** (see [Omega options](#signalxomegacreate)). This is the main entry for local / remote / parallel unified signals.
-- **`SignalX.Omega.algo`** — **`HeuristicRuntime`**: `analyze()`, `addRule()`, `setProvider()`, and callable `(context: string) => Promise<string>` for formatted reports. Same object as exported **`HeuristicAnalyzer`**.
+- **`Facade.Omega.create<T>(options)`** — Returns an **`OmegaSignal<T>`** (see [Omega options](#facadeomegacreate-options)). This is the main entry for local / remote / parallel unified signals.
+- **`Facade.Omega.algo`** — **`HeuristicRuntime`**: `analyze()`, `addRule()`, `setProvider()`, and callable `(context: string) => Promise<string>` for formatted reports. Same object as exported **`HeuristicAnalyzer`**.
 
 ### Core (`Signal`, threading)
 
@@ -295,8 +296,8 @@ Everything below is exported from `@rbxts/omeganet` (see `src/index.ts`). Types 
 
 ### Remote layer
 
-- **`RemoteSignal<T>`** — Low-level RemoteEvent wrapper (folder under `ReplicatedStorage`, batching, compression, schema). **`SignalX.Omega.create` with `mode: "remote"`** uses this internally; use the class directly only if you need fine control.
-- **`RemoteFunctionX<TArgs, TReturn>`** — Typed **`RemoteFunction`** under `ReplicatedStorage/SignalX_RemoteFunctions`. **`invokeServer`** (client), **`invokeClient`** / **`setServerHandler`** (server), **`setClientHandler`** (client), **`destroy`**.
+- **`RemoteSignal<T>`** — Low-level RemoteEvent wrapper (folder under `ReplicatedStorage`, batching, compression, schema). **`Facade.Omega.create` with `mode: "remote"`** uses this internally; use the class directly only if you need fine control.
+- **`RemoteFunctionX<TArgs, TReturn>`** — Typed **`RemoteFunction`** under an internal `ReplicatedStorage` folder. **`invokeServer`** (client), **`invokeClient`** / **`setServerHandler`** (server), **`setClientHandler`** (client), **`destroy`**.
 - **`Reconciler<State, Input>`** — Client prediction / server reconciliation (`predict`, `reconcile`, configurable `apply` / `equals`).
 - **`rleCompressor`**, **`noCompressor`** — Built-in payload compressors; custom **`Compressor`** type in `remote/types`.
 - **`schema`** (`S` from Validator) — **`schema.number`**, **`schema.string`**, **`schema.boolean`**, **`schema.instanceOf`**, **`schema.player`**, **`schema.vector3`**, `parse` / `safeParse` compatible **`SchemaLike<T>`**.
@@ -306,7 +307,7 @@ Everything below is exported from `@rbxts/omeganet` (see `src/index.ts`). Types 
 
 ### Parallel
 
-- **`ActorPool`** — Named pool of **`Actor`** instances (default folder `SignalX_Actors`, 1–64 actors). **`send`**, **`sendTo`**, **`destroy`**.
+- **`ActorPool`** — Named pool of **`Actor`** instances (default internal folder, 1–64 actors). **`send`**, **`sendTo`**, **`destroy`**.
 - **`SharedState<T>`** — Cross-actor shared keys with **`get`**, **`set`**, **`subscribe`**, race reporting via **`racer`** (**`RaceDetector`**).
 - **`RaceDetector`** — Standalone detector: **`recordWrite`**, **`onRace`**, **`destroy`** (fires when two writers touch the same path in one Heartbeat window).
 - **Types**: `ActorPoolOptions`, `SharedStateOptions`, `Unsubscribe`.
@@ -321,7 +322,7 @@ Everything below is exported from `@rbxts/omeganet` (see `src/index.ts`). Types 
 
 ### Analysis & DevTools
 
-- **`HeuristicAnalyzer`** — Same as **`SignalX.Omega.algo`** (runtime suggestions from **`Collector`** stats + custom **`Rule`** functions).
+- **`HeuristicAnalyzer`** — Same as **`Facade.Omega.algo`** (runtime suggestions from **`Collector`** stats + custom **`Rule`** functions).
 - **`defaultRules`**, **`Rule`**, **`Suggestion`**, **`SuggestionSeverity`** — Rule engine types.
 - **`HintProvider`** — `{ ask(context, stats) => Promise<string> }` for custom report formatting.
 - **`Collector`** — Tracks per-signal stats (`getAllStats`, used by algo).
@@ -338,11 +339,11 @@ Everything below is exported from `@rbxts/omeganet` (see `src/index.ts`). Types 
 
 ### Common utilities
 
-- **`Result`**, **`ok`**, **`err`**, **`isOk`**, **`isErr`**, **`unwrap`**, **`unwrapOr`**, **`mapResult`**, **`mapErr`**, **`toError`**, **`SignalXError`** — Lightweight Result type (not full `neverthrow`; see `common/Result`).
+- **`Result`**, **`ok`**, **`err`**, **`isOk`**, **`isErr`**, **`unwrap`**, **`unwrapOr`**, **`mapResult`**, **`mapErr`**, **`toError`**, and the exported custom error type — Lightweight Result utilities (not full `neverthrow`; see `common/Result`).
 - **`assertNever`**, **`safeParseToResult`** — Exhaustiveness and schema → Result adapter.
 - **Branded IDs**: `SignalName`, `PoolName`, `StateName`, `RuleId`, **`asSignalName`**, **`asPoolName`**, **`asStateName`**, **`asRuleId`**.
 
-### `SignalX.Omega.create` options
+### `Facade.Omega.create` options
 
 | Option             | Type                                   | Default    | Notes |
 | ------------------ | -------------------------------------- | ---------- | ----- |
@@ -424,7 +425,7 @@ The `analyze` command is a static linter that flags `any`, non-null assertions, 
 ├── devtools/      Collector, DevToolsStream, Studio plugin
 ├── testing/       MockSignal, simulate, snapshot helpers
 ├── common/        Result, branded IDs, assertNever
-├── omega/         SignalX.Omega facade
+├── omega/         Facade.Omega namespace
 └── types/         Extra public type re-exports
 ```
 

@@ -47,7 +47,7 @@ export class Reconciler<TState, TInput> {
 		const drift = !this.equalsFn(s, this.state);
 		this.state = s;
 		if (drift && this.options.quiet !== true) {
-			warn(`[SignalX/Reconciler] drift corrected at seq ${lastProcessedSeq}`);
+			warn(`[Omeganet/Reconciler] drift corrected at seq ${lastProcessedSeq}`);
 		}
 		return this.state;
 	}

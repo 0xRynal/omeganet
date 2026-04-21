@@ -1,6 +1,6 @@
-import { SignalX, rateLimit, validate, schema, auth } from "@rbxts/omeganet";
+import { Omeganet, rateLimit, validate, schema, auth } from "@rbxts/omeganet";
 
-const damageSignal = SignalX.Omega.create<(targetId: number, amount: number) => void>({
+const damageSignal = Omeganet.Omega.create<(targetId: number, amount: number) => void>({
 	name: "dealDamage",
 	mode: "remote",
 	reliability: "reliable",

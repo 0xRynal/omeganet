@@ -1,6 +1,6 @@
-import { SignalX, SharedState } from "@rbxts/omeganet";
+import { Omeganet, SharedState } from "@rbxts/omeganet";
 
-const simulation = SignalX.Omega.create<(entityId: number, dt: number) => void>({
+const simulation = Omeganet.Omega.create<(entityId: number, dt: number) => void>({
 	name: "entitySimulation",
 	mode: "parallel",
 	parallel: true,

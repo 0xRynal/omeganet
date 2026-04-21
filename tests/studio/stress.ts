@@ -55,7 +55,7 @@ function bench(
 export function runStress(): StressReport {
 	print("");
 	print("=======================================================");
-	print("  SignalX — stress benchmarks");
+	print("  Omeganet — stress benchmarks");
 	print("=======================================================");
 	print("  ops      = loop iterations (work split with task.wait to avoid timeout)");
 	print("  ms       = CPU time in measured slices only (yields excluded)");
@@ -155,4 +155,4 @@ export function runStress(): StressReport {
 	print(string.format("  Benchmarks: %d  |  Wall time (incl. yields): %.2f ms", benches.size(), totalMs));
 	print("=======================================================");
 	return { benches, durationMs: totalMs };
-}
+}

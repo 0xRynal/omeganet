@@ -1,6 +1,6 @@
-import { SignalX } from "@rbxts/omeganet";
+import { Omeganet } from "@rbxts/omeganet";
 
-const damageSignal = SignalX.Omega.create<(targetId: number, amount: number) => void>({
+const damageSignal = Omeganet.Omega.create<(targetId: number, amount: number) => void>({
 	name: "dealDamage",
 	mode: "remote",
 	batch: true,

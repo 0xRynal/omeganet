@@ -1,2 +1,2 @@
-export { SignalX } from "./SignalX";
-export type { OmegaCreateOptions, OmegaMode, OmegaSignal } from "./types";
+export { Omeganet } from "./Omeganet";
+export type { OmegaCreateOptions, OmegaMode, OmegaSignal } from "./types";

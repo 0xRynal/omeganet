@@ -1,5 +1,5 @@
 import {
-	SignalX,
+	Omeganet,
 	Observable,
 	BehaviorSubject,
 	debounceOp,
@@ -8,7 +8,7 @@ import {
 	createSignalValue,
 } from "@rbxts/omeganet";
 
-const inputSignal = SignalX.Omega.create<(text: string) => void>({
+const inputSignal = Omeganet.Omega.create<(text: string) => void>({
 	name: "userInput",
 	mode: "local",
 });

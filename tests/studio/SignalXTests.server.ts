@@ -97,8 +97,8 @@ task.spawn(() => {
 		print("  [FINAL] PASS — every suite green");
 	}
 	print("#######################################################");
-	print("  Lua table : _G.SignalXTestReport  (server only)");
-	print("  Text copy : ReplicatedStorage.SignalXTestReport.Value  (server + client)");
+	print("  Lua table : _G.OmeganetTestReport  (server only)");
+	print("  Text copy : ReplicatedStorage.OmeganetTestReport.Value  (server + client)");
 	print("#######################################################");
 
 	const report: GrandReport = {
@@ -108,7 +108,7 @@ task.spawn(() => {
 		startedAt,
 		durationMs,
 	};
-	(_G as unknown as { SignalXTestReport: GrandReport }).SignalXTestReport = report;
+	(_G as unknown as { OmeganetTestReport: GrandReport }).OmeganetTestReport = report;
 
 	const summaryLines: Array<string> = [];
 	summaryLines.push(
@@ -149,10 +149,10 @@ task.spawn(() => {
 	}
 	summaryLines.push(string.format("total: %.2f ms", durationMs));
 
-	const existing = ReplicatedStorage.FindFirstChild("SignalXTestReport");
+	const existing = ReplicatedStorage.FindFirstChild("OmeganetTestReport");
 	if (existing) existing.Destroy();
 	const sv = new Instance("StringValue");
-	sv.Name = "SignalXTestReport";
+	sv.Name = "OmeganetTestReport";
 	sv.Value = summaryLines.join("\n");
 	sv.Parent = ReplicatedStorage;
 });

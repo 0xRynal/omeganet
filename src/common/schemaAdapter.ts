@@ -1,12 +1,12 @@
 import type { SchemaLike } from "../middleware/builtins/validate";
 import { err, ok, toError } from "./Result";
 import type { Result } from "./Result";
-import type { SignalXError } from "./Result";
+import type { OmeganetError } from "./Result";
 
 export function safeParseToResult<T>(
 	schema: SchemaLike<T>,
 	value: unknown,
-): Result<T, SignalXError> {
+): Result<T, OmeganetError> {
 	if (schema.safeParse !== undefined) {
 		const r = schema.safeParse(value);
 		return r.success ? ok(r.data) : err(toError(r.error, "SCHEMA_INVALID"));

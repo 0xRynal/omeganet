@@ -1,4 +1,4 @@
-export { SignalX } from "./omega/SignalX";
+export { Omeganet } from "./omega/Omeganet";
 export type { OmegaCreateOptions, OmegaMode, OmegaSignal } from "./omega/types";
 
 export { Signal } from "./core/Signal";
@@ -84,7 +84,7 @@ export { MockSignal, simulate, takeSnapshot, serialize, assertMatches } from "./
 export type { SimulatorOptions, SimulationReport, Snapshot } from "./testing";
 
 export {
-	SignalXError,
+	OmeganetError,
 	ok,
 	err,
 	isOk,

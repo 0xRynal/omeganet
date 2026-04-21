@@ -12,7 +12,7 @@ export {
 
 export {
 	type Result,
-	SignalXError,
+	OmeganetError,
 	ok,
 	err,
 	isOk,
